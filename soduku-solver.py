@@ -39,6 +39,7 @@ class Cell(object):
 
 class Soduku(object):
     def __init__(self, puzzle_txt):
+        self.source = puzzle_txt
         self.raw_puzzle = np.loadtxt(puzzle_txt, delimiter=',', dtype='int')
         self.puzzle = self.init_cell()
 
@@ -49,6 +50,30 @@ class Soduku(object):
                 num = self.raw_puzzle[irow, icol]
                 puzzle[irow, icol] = Cell(irow, icol, num)
         return puzzle
+
+    def show(self, version='original'):
+        if version == 'original':
+            p = self.raw_puzzle
+        elif version == 'solved':
+            self.solver()
+            p = self.puzzle
+        else:
+            raise ValueError('Wrong Inpupt. Set version to \'original\' or \'solved\'')
+        sep = '+-------+-------+-------+'
+        print()
+        print('      SODUKU PUZZLE      ')
+        print(version)
+        print(sep)
+        for irow in range(9):
+            r_str = '| ' + \
+                    ' | '.join(str(p[irow, 3*i])+' '+str(p[irow, 3*i+1])+' '+str(p[irow, 3*i+2]) for i in range(3)) +\
+                    ' |'
+            print(r_str)
+            if irow in [2, 5, 8]:
+                print(sep)
+        print('* From: ', self.source)
+        if version == 'solved' and not self.is_completed():
+            print('** The puzzle is ' + str(['NOT ', ''][self.is_completed()]) + 'completed.')
 
     def get_block(self, block_irow, block_icol):
         irow = block_irow * 3
@@ -185,28 +210,27 @@ class Soduku(object):
             applied += self.solver_block_unique_candidate()
             if applied == 0:
                 break
-        print('The puzzle is ' + str(['NOT ', ''][self.is_completed()]) + 'completed.')
         return self.puzzle
 
 
 if __name__ == '__main__':
-    print('---easy---')
+    '''---easy---'''
     test_easy = '../SODUKU/soduku1-easy.txt'
     test_easy = Soduku(test_easy)
-    print(test_easy.puzzle)
-    print(test_easy.solver())
-    print('---medium---')
+    test_easy.show('original')
+    test_easy.show('solved')
+    '''---medium---'''
     test_medium = '../SODUKU/soduku3-medium.txt'
     test_medium = Soduku(test_medium)
-    print(test_medium.puzzle)
-    print(test_medium.solver())
-    print('---hard---')
+    test_medium.show('original')
+    test_medium.show('solved')
+    '''---hard---'''
     test_hard = '../SODUKU/soduku4-hard.txt'
     test_hard = Soduku(test_hard)
-    print(test_hard.puzzle)
-    print(test_hard.solver())
-    print('---expert---')
+    test_hard.show('original')
+    test_hard.show('solved')
+    '''---expert---'''
     test_expert = '../SODUKU/soduku5-expert.txt'
     test_expert = Soduku(test_expert)
-    print(test_expert.puzzle)
-    print(test_expert.solver())
+    test_expert.show('original')
+    test_expert.show('solved')
