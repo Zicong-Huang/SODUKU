@@ -201,6 +201,14 @@ class Soduku(object):
                         change += 1
         return change > 0
 
+    def solver_trial_n_error(self):
+        self.set_all_candidates()
+        # trial
+        record_trial = [None, None, None]
+
+
+
+
     def solver(self):
         while not self.is_completed():
             applied = 0
@@ -213,24 +221,13 @@ class Soduku(object):
         return self.puzzle
 
 
+def main():
+    source_path = '../SODUKU/'
+    source_path += input('Enter path of the puzzle file: '+source_path)
+    my_puzzle = Soduku(source_path)
+    my_puzzle.show('original')
+    my_puzzle.show('solved')
+
+
 if __name__ == '__main__':
-    '''---easy---'''
-    test_easy = '../SODUKU/soduku1-easy.txt'
-    test_easy = Soduku(test_easy)
-    test_easy.show('original')
-    test_easy.show('solved')
-    '''---medium---'''
-    test_medium = '../SODUKU/soduku3-medium.txt'
-    test_medium = Soduku(test_medium)
-    test_medium.show('original')
-    test_medium.show('solved')
-    '''---hard---'''
-    test_hard = '../SODUKU/soduku4-hard.txt'
-    test_hard = Soduku(test_hard)
-    test_hard.show('original')
-    test_hard.show('solved')
-    '''---expert---'''
-    test_expert = '../SODUKU/soduku5-expert.txt'
-    test_expert = Soduku(test_expert)
-    test_expert.show('original')
-    test_expert.show('solved')
+    main()
